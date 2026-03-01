@@ -2,6 +2,8 @@
 
 Craftrise ve Sonoyuncu için basit ve hızlı bir proton başlatıcısı.
 
+![Ekran Görüntüsü](ui/ss.png)
+
 ## Kurulum
 1. Depoyu klonlayın:  
    ```bash
