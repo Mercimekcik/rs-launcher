@@ -7,7 +7,7 @@ Craftrise ve Sonoyuncu için basit ve hızlı bir proton başlatıcısı.
 ## Kurulum
 1. Depoyu klonlayın:  
    ```bash
-   https://github.com/Mercimekcik/rs-launcher.git
+   git clone https://github.com/Mercimekcik/rs-launcher.git
 2. Klasöre girin:
    ```bash
    cd rs-launcher
