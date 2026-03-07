@@ -16,6 +16,7 @@ from core.paths import (
     get_exe_path,
     get_prefix_dir,
     get_proton_dir,
+    get_resourcepacks_path,
     exe_exists,
 )
 
@@ -139,3 +140,45 @@ def reset_prefix(game_id: str) -> bool:
         shutil.rmtree(prefix)
         return True
     return False
+
+
+def open_winecfg(game_id: str, on_output: OutputCB | None = None) -> None:
+    """
+    Oyuna ait prefix ile winecfg'yi GE-Proton üzerinden açar.
+    Arayüzü bloklamaz (yeni process).
+    """
+    proton = find_proton_executable()
+    if proton is None:
+        if on_output:
+            on_output("[HATA] Proton GE bulunamadı. Önce indirin.\n")
+        return
+
+    env = _build_env(game_id, proton)
+    cmd = [str(proton), "run", "winecfg"]
+
+    if on_output:
+        on_output(f"winecfg başlatılıyor ({game_id} prefix)…\n")
+
+    subprocess.Popen(
+        cmd,
+        env=env,
+        cwd=str(proton.parent),
+        start_new_session=True,
+    )
+
+
+def open_resourcepacks(game_id: str, on_output: OutputCB | None = None) -> None:
+    """
+    Oyunun kaynak paketi klasörünü sistem dosya yöneticisiyle açar.
+    Klasör yoksa önce oluşturur.
+    """
+    rp_path = get_resourcepacks_path(game_id)
+    rp_path.mkdir(parents=True, exist_ok=True)
+
+    if on_output:
+        on_output(f"Kaynak paketi klasörü açılıyor: {rp_path}\n")
+
+    subprocess.Popen(
+        ["xdg-open", str(rp_path)],
+        start_new_session=True,
+    )
