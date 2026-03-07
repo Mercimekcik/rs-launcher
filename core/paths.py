@@ -18,11 +18,15 @@ GAMES = {
         "name": "CraftRise",
         "exe_url": "https://www.craftrise.com.tr/launcher/CraftRise.exe",
         "exe_name": "CraftRise.exe",
+        # C:\users\steamuser\AppData\Roaming\.craftrise\resourcepacks
+        "resourcepacks_win_path": ["users", "steamuser", "AppData", "Roaming", ".craftrise", "resourcepacks"],
     },
     "sonoyuncu": {
         "name": "SonOyuncu",
         "exe_url": "https://launcher.sonoyuncu.network/launcher/indir/x32/SonOyuncu%20Client.exe",
         "exe_name": "SonOyuncu Client.exe",
+        # C:\users\steamuser\AppData\Roaming\.sonoyuncu\resourcepacks
+        "resourcepacks_win_path": ["users", "steamuser", "AppData", "Roaming", ".sonoyuncu", "resourcepacks"],
     },
 }
 
@@ -85,3 +89,12 @@ def exe_exists(game_id: str) -> bool:
 
 def proton_exists() -> bool:
     return find_proton_executable() is not None
+
+
+def get_resourcepacks_path(game_id: str) -> Path:
+    """Oyunun Wine prefix'indeki kaynak paketi klasörünün Linux yolunu döner."""
+    cfg = GAMES[game_id]
+    base = get_prefix_dir(game_id) / "pfx" / "drive_c"
+    for part in cfg["resourcepacks_win_path"]:
+        base = base / part
+    return base
